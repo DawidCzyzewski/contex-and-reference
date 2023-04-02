@@ -1,154 +1,145 @@
-// import { Component } from "react";
-// import LoginForm from "./Components/LoginForm";
-// import SignUpForm from "./Components/SignUpForm";
-// import { ValueIndicator } from "./Components/ValueIndicator";
-// import { Container } from "./Components/Container";
-// import { ErrorBoundary } from "./Components/ErrorBoundary";
+import { useEffect, useState } from "react";
 
-import { Component } from "react";
-import ArticleList from "./Components/ArticlesList";
-import axios from "axios";
-import ContentLoader from "react-content-loader";
-import {
-  consoleLogAbba,
-  fetchArticlesWithQuery,
-} from "./Components/utils/getArticles";
+const App = () => {
+  // Nasze założenie jest takie, że chcemy mieć wartość i button, który będzie zwiększał tę wartość o jeden.
+  //wartość
+  //button wartość + 1
+  // // const [value, setValue] = useState(initialState);
+  // const [value, setValue] = useState(0);
+  // const [second, setSecond] = useState(5);
+  // // Function used in third button as reference
+  // const handleChange = () => {
+  //   setValue((prevValue) => prevValue + 3);
+  // };
+  // <div>
+  //   {value} , {second}
+  //   <button
+  //     type="button"
+  //     onClick={() => {
+  //       setValue(value + 1);
+  //     }}
+  //   >
+  //     Increase by 1
+  //   </button>
+  //   <button
+  //     type="button"
+  //     onClick={() => {
+  //       setValue((prevValue) => prevValue + 2);
+  //     }}
+  //   >
+  //     Increase other way, by 2
+  //   </button>
+  //   <button type="button" onClick={handleChange}>
+  //     Increase other way, by 3
+  //   </button>
+  //   <button
+  //     type="button"
+  //     onClick={() => {
+  //       setValue(1);
+  //     }}
+  //   >
+  //     Set first as 1
+  //   </button>
+  //   <button
+  //     type="button"
+  //     onClick={() => {
+  //       setSecond(second + 1);
+  //     }}
+  //   >
+  //     Increase second by 1
+  //   </button>
+  // </div>
+  // ONE OF POSSIBLE WAYS BUT I SHOULDN'T DO LIKE THAT:
+  // state not always is start value, so lets create something else
+  // const [userValue, setUserValue] = useState({
+  //   username: "Dawid",
+  //   todos: [{ text: "Clean up!" }],
+  //   isCleaned: false,
+  // });
+  // return (
+  //   <div>
+  //     {userValue.username} should do: {userValue.todos.toString()}. And is it
+  //     done? {userValue.isCleaned}
+  //   </div>
+  // );
+  // // It's better to make smaller hooks for each element:
+  // const [username, setUsername] = useState({
+  //   firstName: "Dawid",
+  //   secondName: "Czyżewski",
+  // });
+  // const [todos, setTodos] = useState([{ text: "H" }]);
+  // const [isActive, setIsActive] = useState(true);
+  // // if I need to use if, I must do if before setFunction, inside it won't work
+  // const handleChange = (value) => {
+  //   if (isActive) {
+  //     setUsername({
+  //       ...username,
+  //       firstName: value,
+  //     });
+  //   }
+  // };
+  // // I also can't use useState in if, this below won't work!
+  // // if (isActive) {
+  // //   const [donut, setDonut] = useState("awesome!");
+  // // }
+  //   return (
+  //     <div>
+  //       {username.firstName} {username.secondName} {todos.toString()} {isActive}
+  //       <button onClick={() => handleChange("Some new first name")}>some</button>
+  //       {/* If I need to use hook in other module, I do it same like in classes */}
+  //       {/* <UsersNames names={username} /> */}
+  //     </div>
+  //   );
 
-// if I import like this, later all functions from this can be named api.function without destructuring
-// import * as api from "./Components/utils/getArticles";
+  const [value, setValue] = useState(0);
+  const [value1, setValue1] = useState(0);
 
-// function App() {
-//   return (
-//     <>
-//       {/* <LoginForm onSubmit={(values) => console.log(values)} /> */}
-//       {/* <SignUpForm onSubmit={(values) => console.log(values)} /> */}
-//       {/* <Container /> */}
-//       {/* <ErrorBoundary /> */}
-//     </>
-//   );
-// }
+  // Sth like ComponentDidUpdate. When I don't give anything after ()=>{}, it will render always anything will change.
+  // useEffect(() => {
+  //   console.log(
+  //     `Look in your browser card. You clicked ${value} times! It's use like ComponentDidUpdate`
+  //   );
+  //   document.title = `Look in your browser card. You clicked ${value} times!`;
+  // });
 
-// Good address:
-axios.defaults.baseURL = "https://hn.algolia.com/api/v1";
-// Error check address:
-// axios.defaults.baseURL = "https://hn.algodasdasdaslia.com/api/v1";
+  // Sth like ComponentDidMount. When I give empty array after ()=>{}, it will render only once, like ComponentDidMount:
+  // useEffect(() => {
+  //   console.log(
+  //     `Look in your browser card. You clicked ${value} times! It's use like ComponentDidUpdate`
+  //   );
+  //   document.title = `Look in your browser card. You clicked ${value} times!`;
+  // }, []);
 
-// Lets change function App on class App
-class App extends Component {
-  state = {
-    articles: [],
-    // query: "/search?query=react",
-    // now in ArticlesList:
-    query: "react",
-    isLoading: false,
-    isError: false,
-    // isError: true,
-    // this upper with this below is better, becouse sometimes error is '' so this upper tell me it is true, so it have error. But if I use both, I need to remember about two identifiers
-    error: "",
-  };
+  // When I give sth in array after ()=>{}, it will render only when this will change. Now in card will update only when I will click first button. Nothing will happens when I will click second.
+  // useEffect(() => {
+  //   console.log(
+  //     `Look in your browser card. You clicked first button ${value} times! It's use like ComponentDidUpdate`
+  //   );
+  //   document.title = `Look in your browser card. You clicked first button ${value} times!`;
+  // }, [value]);
 
-  async componentDidMount() {
-    // if response is empty
-    // if (this.state.query === "") return;
+  // If I use more things in function after function, it is better to listen in array all of them
+  // useEffect(() => {
+  //   console.log(
+  //     `Look in your browser card. You clicked first button ${value} times and second button ${value1} times! It's use like ComponentDidUpdate`
+  //   );
+  //   document.title = `Look in your browser card. You clicked first button ${value} times!`;
+  // }, [value, value1]);
 
-    // Or I can give other response, if empty, for example from backend:
-    // if (this.state.query === "") {
-    //   const response = await axios.get("/search?query=mostAwesomeProducts");
-    //   this.setState(...)
-    // }
-
-    this.setState({
-      isLoading: true,
-    });
-
-    await this.getInitialData();
-
-    // await setTimeout(async () => {
-
-    // axios is asynchronic, so I must use async await
-    // const response = await axios.get(this.state.query);
-    // this.setState({
-    //   // articles: response,
-    //   articles: response.data.hits,
-    //   isLoading: false,
-    // });
-
-    // }, 10000);
-  }
-
-  getInitialData = async () => {
-    // const response = await axios.get(this.state.query);
-
-    // const response = await axios.get(this.state.query).catch().finally();
-
-    // consoleLogAbba();
-
-    try {
-      // const response = await axios.get(this.state.query);
-      const articles = await fetchArticlesWithQuery(this.state.query);
-
-      // this.setState({ articles: articles });
-      this.setState({ articles });
-
-      // console.log("Try state");
-    } catch (error) {
-      console.log("Error state");
-
-      // this.setState({ error: error });
-      // or
-      this.setState({ error });
-    } finally {
-      // console.log("Finally state");
-      this.setState({ isLoading: false });
-    }
-
-    // this.setState({
-    //   // articles: response,
-    //   articles: response.data.hits,
-    //   isLoading: false,
-    // });
-  };
-
-  // It's the best way to non rerendering every time function, but not always we can do it.
-  // getInitialData = () => { ... }
-
-  render() {
-    const { articles, isLoading, error } = this.state;
-
-    return (
-      <>
-        {/* The best way to make function here is by reference like this, becouse it wont rerender every time */}
-        {/* <div onClick={this.getInitialData}></div> */}
-
-        {/* Second best way is anonyme function: */}
-        {/* <div
-          onClick={(e) => this.getInitialData(e, exampleAdditionalProps)}
-        ></div> */}
-
-        {/* Third way is inline function, but it's better only when it's not so much in it, like maximum one thing */}
-        {/* <div
-          onClick={() => {
-            isReady = true;
-          }}
-        ></div> */}
-
-        {/* {articles.length > 0 ? (
-          <ArticleList articles={articles} />
-        ) : (
-          <div>Pusto</div>
-        )} */}
-
-        {/* {isLoading ? <p>Loading...</p> : <ArticleList articles={articles} />} */}
-
-        {/* {isLoading ? <ContentLoader /> : <ArticleList articles={articles} />} */}
-
-        {/* instead of this two lines upper I can do: */}
-        {error && <p>Something went wrong: {error.message}</p>}
-        {isLoading && <ContentLoader />}
-        {articles.length > 0 && <ArticleList articles={articles} />}
-      </>
-    );
-  }
-}
+  return (
+    <></>
+    // <div>
+    //   <p>
+    //     You clicked {value} times and second button {value1} times
+    //   </p>
+    //   <button type="button" onClick={() => setValue(value + 1)}>
+    //     Click!
+    //   </button>
+    //   <button type="button" onClick={() => setValue1(value1 + 1)}>
+    //     Click!
+    //   </button>
+    // </div>
+  );
+};
 
 export default App;
