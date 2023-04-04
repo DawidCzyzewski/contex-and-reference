@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+// import App from "./App";
+import App2 from "./App2";
 
 import { UserContext, UserProvider } from "./providers/userContext";
-import { useContext } from "react";
+// import { useContext } from "react";
 
 import reportWebVitals from "./reportWebVitals";
 
@@ -12,7 +13,8 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <UserProvider>
-      <App />
+      {/* <App /> */}
+      <App2 />
     </UserProvider>
   </React.StrictMode>
 );
