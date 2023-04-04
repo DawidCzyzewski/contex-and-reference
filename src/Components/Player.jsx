@@ -1,3 +1,5 @@
+// Using reference
+
 import { forwardRef, useRef } from "react";
 
 export const Player = forwardRef((props, ref) => {

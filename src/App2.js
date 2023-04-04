@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+// App to reference
+
 import { Player } from "./Components/Player";
 
 const App2 = () => {
